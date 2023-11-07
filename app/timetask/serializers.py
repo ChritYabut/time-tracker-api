@@ -8,7 +8,7 @@ from project.serializers import ProjectSerializer
 
 class TimeTaskSerializer(serializers.ModelSerializer):
     """ Serializer for timetasks. """
-    total_hours = serializers.DecimalField(max_digits=5, decimal_places=2)
+    total_hours = serializers.DecimalField(max_digits=5, decimal_places=2, read_only=True)
     project = ProjectSerializer()
 
     class Meta:
