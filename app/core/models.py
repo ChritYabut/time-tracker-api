@@ -1,12 +1,14 @@
 """
 Database models
 """
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
     PermissionsMixin,
 )
+from datetime import datetime, timezone
 
 
 class UserManager(BaseUserManager):
@@ -42,3 +44,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Project(models.Model):
+    """Project object."""
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class TimeTask(models.Model):
+    """Time Task object."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    hours = models.DecimalField(max_digits=5, decimal_places=2)
+    task_description = models.TextField()
+    date = models.DateField(default=datetime.now)
+
+    def __str__(self):
+        date = self.date.strftime("%m/%d/%Y")
+        return f"{self.user.name} - {self.project.name} - {date}"
