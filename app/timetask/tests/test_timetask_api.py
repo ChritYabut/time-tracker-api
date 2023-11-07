@@ -28,6 +28,7 @@ def create_timetask(user, project, **params):
     timetask = TimeTask.objects.create(user=user, project=project, **defaults)
     return timetask
 
+
 def create_project(**params):
     """ Create and return a sample project."""
     defaults = {
@@ -87,7 +88,9 @@ class PrivateTimeTaskAPITests(TestCase):
 
         res = self.client.get(TIMETASK_URL)
 
-        timetasks = TimeTask.objects.filter(user=self.user, project=self.project)
+        timetasks = TimeTask.objects.filter(
+            user=self.user, project=self.project
+            )
         serializer = TimeTaskSerializer(timetasks, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)

@@ -13,6 +13,7 @@ from timetask import serializers
 
 class TimeTaskFilter(filters.FilterSet):
     date = filters.DateFilter(lookup_expr="gte")
+
     class Meta:
         model = TimeTask
         fields = ['project__name', 'date']
@@ -34,10 +35,14 @@ class TimeTaskViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Retrieve time tasks for authenticated user."""
-        queryset = self.filter_queryset(self.queryset.filter(user=self.request.user))
+        queryset = self.filter_queryset(
+            self.queryset.filter(user=self.request.user)
+        )
         total_hours = queryset.aggregate(total_hours=Sum('hours'))
         # Annotate the queryset with total_hours using aggregation function
-        queryset = queryset.annotate(total_hours=Value(total_hours.get('total_hours'), output_field=DecimalField()))
+        queryset = queryset.annotate(total_hours=Value(
+            total_hours.get('total_hours'), output_field=DecimalField())
+            )
 
         return queryset.order_by('id')
 

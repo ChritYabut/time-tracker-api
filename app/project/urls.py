@@ -1,7 +1,7 @@
 """
 URL mapping for the project app.
 """
-from django.urls import(
+from django.urls import (
     path,
     include,
 )

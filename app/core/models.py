@@ -8,7 +8,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
-from datetime import datetime, timezone
+from datetime import datetime
 
 
 class UserManager(BaseUserManager):
@@ -56,7 +56,8 @@ class Project(models.Model):
 
 class TimeTask(models.Model):
     """Time Task object."""
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     hours = models.DecimalField(max_digits=5, decimal_places=2)
     task_description = models.TextField()
